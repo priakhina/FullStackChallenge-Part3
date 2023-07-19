@@ -1,0 +1,27 @@
+{
+    "name": "phonebook",
+    "version": "1.0.0",
+    "description": "This repository is used for submitting exercises for [Part 3](https://fullstackopen.com/en/part3) (Programming a server with NodeJS and Express) of the [Full Stack Open course](https://fullstackopen.com/en).",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/priakhina/FullStackChallenge-Part3.git"
+    },
+    "author": "Kseniia Priakhina",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/priakhina/FullStackChallenge-Part3/issues"
+    },
+    "homepage": "https://github.com/priakhina/FullStackChallenge-Part3#readme",
+    "dependencies": {
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
