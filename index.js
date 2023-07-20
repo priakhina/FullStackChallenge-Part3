@@ -1,10 +1,14 @@
 const express = require("express");
+const morgan = require("morgan");
+
 const app = express();
 
-// json-parser (https://expressjs.com/en/api.html)
-// transforms the JSON data of a request into a JavaScript object;
-// the parsed data is accessed via the body property of the request object (i.e., req.body)
+// json-parser (https://expressjs.com/en/api.html) is a so-called middleware (http://expressjs.com/en/guide/using-middleware.html).
+// It transforms the JSON data of a request into a JavaScript object;
+// the parsed data is accessed via the body property of the request object (i.e., req.body).
 app.use(express.json());
+// morgan (https://github.com/expressjs/morgan) is an HTTP request logger middleware for node.js
+app.use(morgan("tiny"));
 
 let persons = [
     {
