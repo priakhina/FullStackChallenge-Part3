@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+// json-parser (https://expressjs.com/en/api.html)
+// transforms the JSON data of a request into a JavaScript object;
+// the parsed data is accessed via the body property of the request object (i.e., req.body)
 app.use(express.json());
 
 let persons = [
@@ -25,6 +28,8 @@ let persons = [
         number: "39-23-6423122",
     },
 ];
+
+const generateId = () => Math.floor(100 + Math.random() * 99901); // generating a random number [100; 100,000]
 
 app.get("/", (req, res) => {
     res.send("<h1>Welcome to the phonebook app!</h1>");
@@ -51,6 +56,22 @@ app.delete("/api/persons/:id", (req, res) => {
     persons = persons.filter((person) => person.id !== id);
 
     res.status(204).end();
+});
+
+app.post("/api/persons", (req, res) => {
+    const body = req.body;
+
+    if (!body.name || !body.number) {
+        return res.status(400).json({
+            error: "content missing",
+        });
+    }
+
+    const person = { ...req.body, id: generateId() };
+
+    persons = persons.concat(person);
+
+    res.json(person);
 });
 
 app.get("/info", (req, res) => {
