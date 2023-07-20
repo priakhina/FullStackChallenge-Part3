@@ -63,7 +63,16 @@ app.post("/api/persons", (req, res) => {
 
     if (!body.name || !body.number) {
         return res.status(400).json({
-            error: "content missing",
+            error: "The name or number is missing",
+        });
+    }
+
+    let containsPersonWithSameName = persons.some(
+        (person) => person.name.toUpperCase() === body.name.toUpperCase()
+    );
+    if (containsPersonWithSameName) {
+        return res.status(400).json({
+            error: `The name ${body.name} already exists in the phonebook`,
         });
     }
 
