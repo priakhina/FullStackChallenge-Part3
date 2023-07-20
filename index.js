@@ -7,8 +7,15 @@ const app = express();
 // It transforms the JSON data of a request into a JavaScript object;
 // the parsed data is accessed via the body property of the request object (i.e., req.body).
 app.use(express.json());
+
 // morgan (https://github.com/expressjs/morgan) is an HTTP request logger middleware for node.js
-app.use(morgan("tiny"));
+morgan.token("data", (req, res) => JSON.stringify(req.body));
+
+app.use(
+    morgan(
+        ":method :url :status :res[content-length] - :response-time ms :data"
+    )
+);
 
 let persons = [
     {
