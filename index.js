@@ -50,7 +50,7 @@ app.get("/info", (req, res) => {
     res.send(
         `<p>Phonebook has info for ${
             persons.length
-        } people</p><p>${new Date().toString()}</p>`
+        } people</p><p>${new Date()}</p>`
     );
 });
 
