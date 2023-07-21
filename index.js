@@ -21,6 +21,9 @@ app.use(
 // cors (https://github.com/expressjs/cors) is a middleware that enables CORS (Cross-Origin Resource Sharing) mechanism
 app.use(cors());
 
+// static (http://expressjs.com/en/starter/static-files.html) is a built-in middleware from express that allows to show static content
+app.use(express.static("build"));
+
 let persons = [
     {
         id: 1,
@@ -106,7 +109,7 @@ app.get("/info", (req, res) => {
     );
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
