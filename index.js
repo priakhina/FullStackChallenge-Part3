@@ -27,29 +27,6 @@ app.use(cors());
 // static (http://expressjs.com/en/starter/static-files.html) is a built-in middleware from express that allows to show static content
 app.use(express.static("build"));
 
-let persons = [
-    {
-        id: 1,
-        name: "Arto Hellas",
-        phoneNumber: "040-123456",
-    },
-    {
-        id: 2,
-        name: "Ada Lovelace",
-        phoneNumber: "39-44-5323523",
-    },
-    {
-        id: 3,
-        name: "Dan Abramov",
-        phoneNumber: "12-43-234345",
-    },
-    {
-        id: 4,
-        name: "Mary Poppendieck",
-        phoneNumber: "39-23-6423122",
-    },
-];
-
 const unknownEndpoint = (req, res) => {
     res.status(404).send({ error: "unknown endpoint" });
 };
