@@ -103,15 +103,6 @@ app.post("/api/persons", (req, res) => {
         });
     }
 
-    let containsPersonWithSameName = persons.some(
-        (person) => person.name.toUpperCase() === body.name.toUpperCase()
-    );
-    if (containsPersonWithSameName) {
-        return res.status(400).json({
-            error: `The name ${body.name} already exists in the phonebook`,
-        });
-    }
-
     const person = new Person({
         name: body.name,
         phoneNumber: body.phoneNumber,
@@ -120,6 +111,22 @@ app.post("/api/persons", (req, res) => {
     person.save().then((savedPerson) => {
         res.json(savedPerson);
     });
+});
+
+app.put("/api/persons/:id", (req, res, next) => {
+    const body = req.body;
+
+    const person = {
+        name: body.name,
+        phoneNumber: body.phoneNumber,
+    };
+
+    // the optional { new: true } parameter causes the event handler to be called with the new modified person instead of the original
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+        .then((updatedPerson) => {
+            res.json(updatedPerson);
+        })
+        .catch((error) => next(error));
 });
 
 app.get("/info", (req, res) => {
