@@ -50,6 +50,20 @@ let persons = [
     },
 ];
 
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: "unknown endpoint" });
+};
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message);
+
+    if (error.name === "CastError") {
+        return res.status(400).send({ error: "malformed id" });
+    }
+
+    next(error); // passes the error forward to the default Express error handler
+};
+
 app.get("/", (req, res) => {
     res.send("<h1>Welcome to the phonebook app!</h1>");
 });
@@ -72,15 +86,12 @@ app.get("/api/persons/:id", (req, res) => {
     }
 });
 
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
         .then((result) => {
             res.status(204).end();
         })
-        .catch((error) => {
-            console.log(error);
-            res.status(400).send({ error: "malformed id" });
-        });
+        .catch((error) => next(error));
 });
 
 app.post("/api/persons", (req, res) => {
@@ -118,6 +129,12 @@ app.get("/info", (req, res) => {
         } people</p><p>${new Date()}</p>`
     );
 });
+
+// handler of requests with unknown endpoint (the unknown endpoint middleware)
+app.use(unknownEndpoint);
+// handler of requests with result to errors (the error-handling middleware);
+// has to be the last loaded middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
