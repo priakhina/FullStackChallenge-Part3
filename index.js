@@ -50,8 +50,6 @@ let persons = [
     },
 ];
 
-const generateId = () => Math.floor(100 + Math.random() * 99901); // generating a random number [100; 100,000]
-
 app.get("/", (req, res) => {
     res.send("<h1>Welcome to the phonebook app!</h1>");
 });
@@ -99,11 +97,14 @@ app.post("/api/persons", (req, res) => {
         });
     }
 
-    const person = { ...req.body, id: generateId() };
+    const person = new Person({
+        name: body.name,
+        phoneNumber: body.phoneNumber,
+    });
 
-    persons = persons.concat(person);
-
-    res.json(person);
+    person.save().then((savedPerson) => {
+        res.json(savedPerson);
+    });
 });
 
 app.get("/info", (req, res) => {
