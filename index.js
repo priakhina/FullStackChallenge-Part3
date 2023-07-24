@@ -36,6 +36,8 @@ const errorHandler = (error, req, res, next) => {
 
     if (error.name === "CastError") {
         return res.status(400).send({ error: "malformed id" });
+    } else if (error.name === "ValidationError") {
+        return res.status(400).json({ error: error.message });
     }
 
     next(error); // passes the error forward to the default Express error handler
@@ -72,35 +74,32 @@ app.delete("/api/persons/:id", (req, res, next) => {
         .catch((error) => next(error));
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
     const body = req.body;
-
-    if (!body.name || !body.phoneNumber) {
-        return res.status(400).json({
-            error: "The name or number is missing",
-        });
-    }
 
     const person = new Person({
         name: body.name,
         phoneNumber: body.phoneNumber,
     });
 
-    person.save().then((savedPerson) => {
-        res.json(savedPerson);
-    });
+    person
+        .save()
+        .then((savedPerson) => {
+            res.json(savedPerson);
+        })
+        .catch((error) => next(error));
 });
 
 app.put("/api/persons/:id", (req, res, next) => {
-    const body = req.body;
+    const { name, phoneNumber } = req.body;
 
-    const person = {
-        name: body.name,
-        phoneNumber: body.phoneNumber,
-    };
-
-    // the optional { new: true } parameter causes the event handler to be called with the new modified person instead of the original
-    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    // The optional { new: true } parameter causes the event handler to be called with the new modified person instead of the original.
+    // Update validators are off by default, need to specify the runValidators option.
+    Person.findByIdAndUpdate(
+        req.params.id,
+        { name, phoneNumber },
+        { new: true, runValidators: true, context: "query" }
+    )
         .then((updatedPerson) => {
             res.json(updatedPerson);
         })
