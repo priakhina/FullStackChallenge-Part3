@@ -37,7 +37,14 @@ const errorHandler = (error, req, res, next) => {
     if (error.name === "CastError") {
         return res.status(400).send({ error: "malformed id" });
     } else if (error.name === "ValidationError") {
-        return res.status(400).json({ error: error.message });
+        const errors = [];
+
+        // collecting all error messages; source: https://stackoverflow.com/a/61056403
+        Object.keys(error.errors).forEach((key) => {
+            errors.push(error.errors[key].message);
+        });
+
+        return res.status(400).json({ error: errors.join(" ") });
     }
 
     next(error); // passes the error forward to the default Express error handler
