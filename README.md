@@ -9,6 +9,12 @@ This repository is used for submitting exercises for [Part 3](https://fullstacko
 
 An online version of the Phonebook app can be accessed via [https://full-stack-challenge-phonebook.onrender.com](https://full-stack-challenge-phonebook.onrender.com).
 
+<div align="center">
+  <a href="https://full-stack-challenge-phonebook.onrender.com/" target="_blank" rel="noreferrer">
+    <img src="docs/images/phonebook_main-view.png" alt="Phonebook App - Main View" width="80%" /> 
+  </a>
+</div>
+
 ## Functionality
 
 The app provides users with the following functionality:
@@ -30,3 +36,7 @@ To ensure correctness of the input data, there have been defined specific valida
         - eg. 1234556, 1-22334455 and 10-22-334455 are invalid
 
 When a validation error occurs, the app notifies the user by displaying a corresponding message.
+
+<div align="center">
+  <img src="docs/images/phonebook_error-message.png" alt="Phonebook App - Error Message" width="80%" /> 
+</div>
